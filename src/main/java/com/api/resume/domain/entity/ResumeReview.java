@@ -1,10 +1,15 @@
 package com.api.resume.domain.entity;
 
+import com.api.resume.application.service.command.ResumeReviewCreateCommand;
+import com.api.resume.application.service.command.ResumeReviewUpdateCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +25,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class ResumeReview {
     @Id
     @Column(name = "review_id")
@@ -60,9 +66,40 @@ public class ResumeReview {
     @Column(name = "project_end_date")
     private LocalDate projectEndDate;
 
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public static ResumeReview create(ResumeReviewCreateCommand command) {
+
+        ResumeReview review = new ResumeReview();
+        review.title = command.getTitle();
+        review.companyName = command.getCompanyName();
+        review.situation = command.getSituation();
+        review.task = command.getTask();
+        review.actionsTaken = command.getActionsTaken();
+        review.result = command.getResult();
+        review.keywords = command.getKeywords();
+        review.projectStartDate = command.getProjectStartDate();
+        review.projectEndDate = command.getProjectEndDate();
+
+        return review;
+    }
+
+    public void modify(ResumeReviewUpdateCommand command) {
+        this.title = command.getTitle();
+        this.companyName = command.getCompanyName();
+        this.situation = command.getSituation();
+        this.task = command.getTask();
+        this.actionsTaken = command.getActionsTaken();
+        this.result = command.getResult();
+        this.keywords = command.getKeywords();
+        this.projectStartDate = command.getProjectStartDate();
+        this.projectEndDate = command.getProjectEndDate();
+    }
+
 }

@@ -3,7 +3,7 @@ package com.api.resume.document;
 import com.api.resume.adapter.controller.ResumeReviewController;
 import com.api.resume.adapter.payload.resumereivew.ResumeReviewCreateRequest;
 import com.api.resume.adapter.payload.resumereivew.ResumeReviewUpdateRequest;
-import com.api.resume.adapter.proxy.ResumeReviewProxy;
+import com.api.resume.application.usecase.*;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,7 +40,19 @@ public class ResumeReviewDocumentationTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private ResumeReviewProxy resumeReviewProxy;
+    private ResumeReviewListUseCase resumeReviewListUseCase;
+
+    @MockBean
+    private ResumeReviewDetailUseCase resumeReviewDetailUseCase;
+
+    @MockBean
+    private ResumeReviewCreateUseCase resumeReviewCreateUseCase;
+
+    @MockBean
+    private ResumeReviewUpdateUseCase resumeReviewUpdateUseCase;
+
+    @MockBean
+    private ResumeReviewDeleteUseCase resumeReviewDeleteUseCase;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -66,7 +78,7 @@ public class ResumeReviewDocumentationTests {
                         .build()
         );
 
-        Mockito.when(resumeReviewProxy.getResumeReviewList(Mockito.any(), Mockito.eq("DESC")))
+        Mockito.when(resumeReviewListUseCase.getAllResumeReviewList(Mockito.any(), Mockito.eq("DESC")))
                 .thenReturn(mockData);
 
         mockMvc.perform(get("/api/v1/resumes/reviews")
@@ -111,8 +123,9 @@ public class ResumeReviewDocumentationTests {
                 .result("blah blah~~~ ")
                 .build();
 
-        Mockito.when(resumeReviewProxy.getResumeReview(1L))
+        Mockito.when(resumeReviewDetailUseCase.getResumeReview(1L))
                 .thenReturn(response);
+
         mockMvc.perform(get(URI + "/{reviewId}", 1)
                         .contentType(APPLICATION_JSON)
                 ).andExpect(status().isOk())
@@ -180,7 +193,7 @@ public class ResumeReviewDocumentationTests {
     void updateResumeReview() throws Exception {
         ResumeReviewUpdateRequest update =
                 ResumeReviewUpdateRequest.builder()
-                        .reviewId(1L)
+                        .userId(1L)
                         .title("B project")
                         .companyName("lalalal company")
                         .projectStartDate(LocalDate.now())
@@ -202,7 +215,7 @@ public class ResumeReviewDocumentationTests {
                                 parameterWithName("reviewId").description("프로젝트 회고 식별자")
                         ),
                         requestFields(
-                                fieldWithPath("reviewId").description("프로젝트 회고 식별자").ignored(),
+                                fieldWithPath("userId").description("사용자 id"),
                                 fieldWithPath("title").description("프로젝트 제목"),
                                 fieldWithPath("companyName").description("회사명"),
                                 fieldWithPath("projectStartDate").description("프로젝트 시작일"),

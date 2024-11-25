@@ -24,12 +24,12 @@ public class ResumeReviewQueryService implements ResumeReviewListUseCase, Resume
     @Override
     public List<ResumeReviewListDto> getAllResumeReviewList(final ResumeReviewListQuery query, final String direction) {
         List<ResumeReview> resumeReviews = resumeReviewAdapter.getAllResumeReview(query, direction);
-        return ResumeReviewDtoConverter.INSTANCE.toResumeReviewListDtos(resumeReviews);
+        return ResumeReviewListDto.from(resumeReviews);
     }
 
     @Override
     public ResumeReviewDetailDto getResumeReview(long reviewId) {
         ResumeReview resumeReview = resumeReviewAdapter.getResumeReview(reviewId);
-        return ResumeReviewDtoConverter.INSTANCE.toResumeReviewDetailDto(resumeReview);
+        return ResumeReviewDetailDto.from(resumeReview);
     }
 }

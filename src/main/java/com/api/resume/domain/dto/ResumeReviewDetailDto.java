@@ -1,5 +1,6 @@
 package com.api.resume.domain.dto;
 
+import com.api.resume.domain.entity.ResumeReview;
 import lombok.Builder;
 import lombok.Value;
 
@@ -18,4 +19,19 @@ public class ResumeReviewDetailDto {
     String keywords;
     LocalDate projectStartDate;
     LocalDate projectEndDate;
+
+    public static ResumeReviewDetailDto from(final ResumeReview resumeReview) {
+        return new ResumeReviewDetailDto(resumeReview.getId()
+                , resumeReview.getTitle()
+                , resumeReview.getCompanyName()
+                , resumeReview.getSituation()
+                , resumeReview.getTask()
+                , resumeReview.getActionsTaken()
+                , resumeReview.getResult()
+                , resumeReview.getKeywords()
+                , resumeReview.getProjectStartDate()
+                , resumeReview.getProjectEndDate()
+        );
+    }
+
 }

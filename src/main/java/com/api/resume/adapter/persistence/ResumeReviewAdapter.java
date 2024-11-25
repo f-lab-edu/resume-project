@@ -1,5 +1,7 @@
 package com.api.resume.adapter.persistence;
 
+import com.api.resume.application.service.command.ResumeReviewCreateCommand;
+import com.api.resume.application.service.command.ResumeReviewUpdateCommand;
 import com.api.resume.application.service.query.ResumeReviewListQuery;
 import com.api.resume.domain.entity.ResumeReview;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +28,13 @@ public class ResumeReviewAdapter {
     public ResumeReview getResumeReview(final long reviewId) {
         return resumeReviewJpaRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("프로젝트 회고가 존재하지 않습니다. review Id : " + reviewId));
+    }
+
+    public ResumeReview save(final ResumeReview resumeReview) {
+        return resumeReviewJpaRepository.save(resumeReview);
+    }
+
+    public void delete(final long reviewId) {
+        resumeReviewJpaRepository.deleteById(reviewId);
     }
 }

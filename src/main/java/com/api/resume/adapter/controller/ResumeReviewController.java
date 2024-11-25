@@ -1,16 +1,16 @@
 package com.api.resume.adapter.controller;
 
-import com.api.resume.adapter.converter.ResumeReviewResponseConverter;
 import com.api.resume.adapter.payload.resumereivew.*;
-import com.api.resume.adapter.proxy.ResumeReviewProxy;
+import com.api.resume.application.service.command.ResumeReviewCreateCommand;
+import com.api.resume.application.service.command.ResumeReviewUpdateCommand;
 import com.api.resume.application.service.query.ResumeReviewListQuery;
+import com.api.resume.application.usecase.*;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,10 +18,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResumeReviewController {
 
-    private final ResumeReviewProxy resumeReviewProxy;
+    private final ResumeReviewListUseCase resumeReviewListUseCase;
+    private final ResumeReviewDetailUseCase resumeReviewDetailUseCase;
+    private final ResumeReviewCreateUseCase resumeReviewCreateUseCase;
+    private final ResumeReviewUpdateUseCase resumeReviewUpdateUseCase;
+    private final ResumeReviewDeleteUseCase resumeReviewDeleteUseCase;
+
 
     @GetMapping("")
-    public ResponseEntity<List<ResumeReviewListResponse>> getAllResumeReview(ResumeReviewListRequest request,
+    public List<ResumeReviewListResponse> getAllResumeReview(ResumeReviewListRequest request,
                                                                              @RequestParam(defaultValue = "DESC") String direction) {
         ResumeReviewListQuery query =
                 ResumeReviewListQuery.builder()
@@ -29,31 +34,56 @@ public class ResumeReviewController {
                         .companyName(request.getCompanyName())
                         .keyword(request.getKeyword())
                         .build();
-        List<ResumeReviewListDto> resumeReviewList = resumeReviewProxy.getResumeReviewList(query, direction);
-        List<ResumeReviewListResponse> results = ResumeReviewResponseConverter.INSTANCE.toResumeReviewListResponses(resumeReviewList);
-        return ResponseEntity.ok().body(results);
+        List<ResumeReviewListDto> resumeReviewList = resumeReviewListUseCase.getAllResumeReviewList(query, direction);
+        return ResumeReviewListResponse.from(resumeReviewList);
     }
 
     @GetMapping("/{reviewId}")
-    public ResponseEntity<ResumeReviewDetailResponse> getResumeReview(@PathVariable Long reviewId) {
-        ResumeReviewDetailDto resumeReviewDetail = resumeReviewProxy.getResumeReview(reviewId);
-        ResumeReviewDetailResponse result = ResumeReviewResponseConverter.INSTANCE.toResumeReviewDetailResponse(resumeReviewDetail);
-        return ResponseEntity.ok().body(result);
+    public ResumeReviewDetailResponse getResumeReview(@PathVariable Long reviewId) {
+        ResumeReviewDetailDto resumeReviewDetail = resumeReviewDetailUseCase.getResumeReview(reviewId);
+        return ResumeReviewDetailResponse.from(resumeReviewDetail);
     }
 
     @PostMapping("")
-    public ResponseEntity<Void> create(@RequestBody ResumeReviewCreateRequest request) {
-        URI uri = URI.create("");
-        return ResponseEntity.created(uri).build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody ResumeReviewCreateRequest request) {
+        ResumeReviewCreateCommand command = ResumeReviewCreateCommand.builder()
+                .title(request.getTitle())
+                .companyName(request.getCompanyName())
+                .situation(request.getSituation())
+                .task(request.getTask())
+                .actionsTaken(request.getActionsTaken())
+                .result(request.getResult())
+                .keywords(request.getKeywords())
+                .projectStartDate(request.getProjectStartDate())
+                .projectEndDate(request.getProjectEndDate())
+                .build();
+
+        resumeReviewCreateUseCase.create(command);
     }
 
     @PutMapping("/{reviewId}")
-    public ResponseEntity<Void> update(@PathVariable Long reviewId, @RequestBody ResumeReviewUpdateRequest request) {
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.OK)
+    public void update(@PathVariable Long reviewId, @RequestBody ResumeReviewUpdateRequest request) {
+        ResumeReviewUpdateCommand command = ResumeReviewUpdateCommand.builder()
+                .userId(request.getUserId())
+                .reviewId(reviewId)
+                .title(request.getTitle())
+                .companyName(request.getCompanyName())
+                .situation(request.getSituation())
+                .task(request.getTask())
+                .actionsTaken(request.getActionsTaken())
+                .result(request.getResult())
+                .keywords(request.getKeywords())
+                .projectStartDate(request.getProjectStartDate())
+                .projectEndDate(request.getProjectEndDate())
+                .build();
+        resumeReviewUpdateUseCase.update(command);
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> delete(@PathVariable Long reviewId) {
-        return ResponseEntity.noContent().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long reviewId) {
+        resumeReviewDeleteUseCase.delete(reviewId);
     }
 }
