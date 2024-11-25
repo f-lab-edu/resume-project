@@ -1,4 +1,4 @@
-package com.api.resume.adapter.payload.resumereivew;
+package com.api.resume.application.service.command;
 
 import lombok.Builder;
 import lombok.Value;
@@ -7,8 +7,9 @@ import java.time.LocalDate;
 
 @Value
 @Builder
-public class ResumeReviewUpdateRequest {
+public class ResumeReviewUpdateCommand {
     Long userId;
+    Long reviewId;
     String title;
     String companyName;
     LocalDate projectStartDate;
