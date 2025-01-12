@@ -8,7 +8,7 @@ spring:
     password: 1@34
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
