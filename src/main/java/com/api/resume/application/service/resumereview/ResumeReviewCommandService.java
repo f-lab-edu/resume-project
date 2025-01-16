@@ -1,11 +1,11 @@
-package com.api.resume.application.service;
+package com.api.resume.application.service.resumereview;
 
-import com.api.resume.adapter.persistence.ResumeReviewAdapter;
-import com.api.resume.application.service.command.ResumeReviewCreateCommand;
-import com.api.resume.application.service.command.ResumeReviewUpdateCommand;
-import com.api.resume.application.usecase.ResumeReviewCreateUseCase;
-import com.api.resume.application.usecase.ResumeReviewDeleteUseCase;
-import com.api.resume.application.usecase.ResumeReviewUpdateUseCase;
+import com.api.resume.adapter.persistence.resumereview.ResumeReviewAdapter;
+import com.api.resume.application.service.resumereview.command.ResumeReviewCreateCommand;
+import com.api.resume.application.service.resumereview.command.ResumeReviewUpdateCommand;
+import com.api.resume.application.usecase.resumereview.ResumeReviewCreateUseCase;
+import com.api.resume.application.usecase.resumereview.ResumeReviewDeleteUseCase;
+import com.api.resume.application.usecase.resumereview.ResumeReviewUpdateUseCase;
 import com.api.resume.domain.entity.ResumeReview;
 import com.api.resume.domain.service.ResumeReviewService;
 import lombok.RequiredArgsConstructor;

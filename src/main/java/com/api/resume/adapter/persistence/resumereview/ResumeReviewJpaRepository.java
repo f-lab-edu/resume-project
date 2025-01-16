@@ -1,4 +1,4 @@
-package com.api.resume.adapter.persistence;
+package com.api.resume.adapter.persistence.resumereview;
 
 import com.api.resume.domain.entity.ResumeReview;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,7 +3,7 @@ package com.api.resume.document;
 import com.api.resume.adapter.controller.ResumeReviewController;
 import com.api.resume.adapter.payload.resumereivew.ResumeReviewCreateRequest;
 import com.api.resume.adapter.payload.resumereivew.ResumeReviewUpdateRequest;
-import com.api.resume.application.usecase.*;
+import com.api.resume.application.usecase.resumereview.*;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

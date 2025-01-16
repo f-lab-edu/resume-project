@@ -1,6 +1,6 @@
-package com.api.resume.application.usecase;
+package com.api.resume.application.usecase.resumereview;
 
-import com.api.resume.application.service.query.ResumeReviewListQuery;
+import com.api.resume.application.service.resumereview.query.ResumeReviewListQuery;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 
 import java.util.List;

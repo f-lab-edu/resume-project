@@ -1,4 +1,4 @@
-package com.api.resume.application.service.query;
+package com.api.resume.application.service.resumereview.query;
 
 import lombok.Builder;
 import lombok.Value;

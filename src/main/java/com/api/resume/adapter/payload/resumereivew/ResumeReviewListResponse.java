@@ -16,8 +16,8 @@ public class ResumeReviewListResponse {
     LocalDate projectEndDate;
     String keywords;
 
-    public static List<ResumeReviewListResponse> from(final List<ResumeReviewListDto> resumeReviewList) {
-        return resumeReviewList.stream()
+    public static List<ResumeReviewListResponse> from(final List<ResumeReviewListDto> resumeReviews) {
+        return resumeReviews.stream()
                 .map(ResumeReviewListResponse::fromDto)
                 .collect(Collectors.toList());
     }

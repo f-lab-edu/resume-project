@@ -1,4 +1,4 @@
-package com.api.resume.application.usecase;
+package com.api.resume.application.usecase.resumereview;
 
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 
