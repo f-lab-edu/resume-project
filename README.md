@@ -15,8 +15,6 @@
    1) controller: REST API 요청 및 응답 처리
    2) payload: 요청(Request) 및 응답(Response) 데이터 객체 정의
    3) persistence: JPA를 통한 데이터베이스 접근
-   4) proxy: Controller와 Application 계층(유스케이스)을 연결하는 중간 계층
-   5) converter: 데이터 변환(엔티티 ↔ DTO)
 
 2) Application (응용 계층) : 유스케이스를 구현하고, 도메인 로직을 호출합니다.
    1) service: 읽기(Query)와 쓰기(Command) 작업을 분리하여 책임을 명확히 정의.
