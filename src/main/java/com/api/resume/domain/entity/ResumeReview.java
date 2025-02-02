@@ -1,7 +1,7 @@
 package com.api.resume.domain.entity;
 
-import com.api.resume.application.service.command.ResumeReviewCreateCommand;
-import com.api.resume.application.service.command.ResumeReviewUpdateCommand;
+import com.api.resume.application.service.resumereview.command.ResumeReviewCreateCommand;
+import com.api.resume.application.service.resumereview.command.ResumeReviewUpdateCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

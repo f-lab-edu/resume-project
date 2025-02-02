@@ -1,10 +1,10 @@
 package com.api.resume.adapter.controller;
 
 import com.api.resume.adapter.payload.resumereivew.*;
-import com.api.resume.application.service.command.ResumeReviewCreateCommand;
-import com.api.resume.application.service.command.ResumeReviewUpdateCommand;
-import com.api.resume.application.service.query.ResumeReviewListQuery;
-import com.api.resume.application.usecase.*;
+import com.api.resume.application.service.resumereview.command.ResumeReviewCreateCommand;
+import com.api.resume.application.service.resumereview.command.ResumeReviewUpdateCommand;
+import com.api.resume.application.service.resumereview.query.ResumeReviewListQuery;
+import com.api.resume.application.usecase.resumereview.*;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import lombok.RequiredArgsConstructor;

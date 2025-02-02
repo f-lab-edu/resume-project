@@ -1,7 +1,8 @@
 package com.api.resume.application.service;
 
-import com.api.resume.adapter.persistence.ResumeReviewAdapter;
-import com.api.resume.application.service.query.ResumeReviewListQuery;
+import com.api.resume.adapter.persistence.resumereview.ResumeReviewAdapter;
+import com.api.resume.application.service.resumereview.query.ResumeReviewListQuery;
+import com.api.resume.application.service.resumereview.ResumeReviewQueryService;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import com.api.resume.domain.entity.ResumeReview;
