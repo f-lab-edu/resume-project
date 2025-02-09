@@ -22,14 +22,15 @@ public class DomainResumeReviewService implements ResumeReviewService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<ResumeReviewListDto> getAllResumeReviewList(ResumeReviewListQuery query, String direction) {
-        return List.of();
+    public List<ResumeReviewListDto> getAllResumeReviewList(final ResumeReviewListQuery query,
+                                                            final String direction) {
+        return ResumeReviewListDto.from(resumeReviewAdapter.getAllResumeReview(query, direction));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public ResumeReviewDetailDto getResumeReview(long reviewId) {
-        return null;
+    public ResumeReviewDetailDto getResumeReview(final long reviewId) {
+        return ResumeReviewDetailDto.from(resumeReviewAdapter.getResumeReview(reviewId));
     }
 
     @Transactional
@@ -53,7 +54,7 @@ public class DomainResumeReviewService implements ResumeReviewService{
 
     @Transactional
     @Override
-    public void delete(long reviewId) {
+    public void delete(final long reviewId) {
         resumeReviewAdapter.delete(reviewId);
     }
 }

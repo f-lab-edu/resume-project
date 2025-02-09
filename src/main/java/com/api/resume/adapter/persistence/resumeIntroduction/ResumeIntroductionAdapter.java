@@ -1,6 +1,7 @@
 package com.api.resume.adapter.persistence.resumeIntroduction;
 
 import com.api.resume.domain.entity.ResumeIntroduction;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

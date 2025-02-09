@@ -21,7 +21,7 @@ public class ResumeReviewController {
     private final ResumeReviewService resumeReviewService;
     @GetMapping("")
     public List<ResumeReviewListResponse> getAllResumeReview(ResumeReviewListRequest request,
-                                                                             @RequestParam(defaultValue = "DESC") String direction) {
+                                                             @RequestParam(defaultValue = "DESC") String direction) {
         ResumeReviewListQuery query =
                 ResumeReviewListQuery.builder()
                         .title(request.getTitle())

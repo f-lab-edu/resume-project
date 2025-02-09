@@ -1,4 +1,4 @@
-package com.api.resume.adapter.payload.user;
+package com.api.resume.adapter.payload.userlicense;
 
 import com.api.resume.domain.dto.UserLicenseListDto;
 import lombok.Builder;

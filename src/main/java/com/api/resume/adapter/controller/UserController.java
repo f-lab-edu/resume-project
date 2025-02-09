@@ -2,9 +2,7 @@ package com.api.resume.adapter.controller;
 
 import com.api.resume.adapter.payload.user.UserCreateRequest;
 import com.api.resume.adapter.payload.user.UserDetailResponse;
-import com.api.resume.adapter.payload.user.UserLicenseListResponse;
 import com.api.resume.adapter.payload.user.UserUpdateRequest;
-import com.api.resume.application.user.UserLicenseService;
 import com.api.resume.application.user.UserService;
 import com.api.resume.application.user.command.UserCreateCommand;
 import com.api.resume.application.user.command.UserUpdateCommand;
@@ -13,15 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    private final UserLicenseService userLicenseService;
 
     @GetMapping("/{userId}")
     public UserDetailResponse getUser(@PathVariable long userId) {
@@ -55,15 +50,5 @@ public class UserController {
         userService.update(update);
     }
 
-    @GetMapping("/{userId}/licenses")
-    public List<UserLicenseListResponse> getLicenses(@PathVariable long userId) {
-        return UserLicenseListResponse.from(userLicenseService.getAllUserLicenses(userId));
-    }
 
-
-    @PostMapping("/{userId}/licenses/{licenseId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addLicense(@PathVariable long userId, @PathVariable long licenseId) {
-        // TODO: implement
-    }
 }

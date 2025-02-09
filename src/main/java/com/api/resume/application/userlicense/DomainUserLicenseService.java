@@ -1,6 +1,8 @@
-package com.api.resume.application.user;
+package com.api.resume.application.userlicense;
 
-import com.api.resume.adapter.persistence.user.UserLicenseAdapter;
+import com.api.resume.adapter.persistence.userlicense.UserLicenseAdapter;
+import com.api.resume.application.userlicense.query.UserLicenseDetailQuery;
+import com.api.resume.domain.dto.UserLicenseDetailDto;
 import com.api.resume.domain.dto.UserLicenseListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,5 +20,10 @@ public class DomainUserLicenseService implements UserLicenseService {
     @Override
     public List<UserLicenseListDto> getAllUserLicenses(final long userId) {
         return UserLicenseListDto.from(userLicenseAdapter.getAllUserLicenses(userId));
+    }
+
+    @Override
+    public UserLicenseDetailDto getUserLicense(UserLicenseDetailQuery query) {
+        return null;
     }
 }

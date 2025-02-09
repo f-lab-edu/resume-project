@@ -1,5 +1,7 @@
 package com.api.resume.domain.entity;
 
+import com.api.resume.application.user.command.UserCreateCommand;
+import com.api.resume.application.user.command.UserUpdateCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,4 +48,16 @@ public class UserLicense {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public static UserLicense create(final UserCreateCommand command) {
+        UserLicense userLicense = new UserLicense();
+        return userLicense;
+    }
+
+    public void modify(final UserUpdateCommand command) {
+        this.licenseName = command.getName();
+        this.issuingAuthority = command.getEmail();
+        this.issueDate = command.getBirthDate();
+        this.licenseNumber = command.getPhoneNumber();
+    }
 }
