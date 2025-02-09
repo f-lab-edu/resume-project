@@ -53,19 +53,19 @@ public class ResumeReviewAdapter {
 
     private BooleanExpression titleContains(final String title) {
         return Optional.ofNullable(title)
-                .map(e -> QResumeReview.resumeReview.title.like(title))
+                .map(e -> QResumeReview.resumeReview.title.contains(title))
                 .orElse(null);
     }
 
     private BooleanExpression companyNameContains(final String companyName) {
         return Optional.ofNullable(companyName)
-                .map(e -> QResumeReview.resumeReview.companyName.like(companyName))
+                .map(e -> QResumeReview.resumeReview.companyName.contains(companyName))
                 .orElse(null);
     }
 
     private BooleanExpression keywordContains(final String keyword) {
         return Optional.ofNullable(keyword)
-                .map(e -> QResumeReview.resumeReview.companyName.like(keyword))
+                .map(e -> QResumeReview.resumeReview.companyName.contains(keyword))
                 .orElse(null);
     }
 
