@@ -3,7 +3,7 @@ package com.api.resume.document;
 import com.api.resume.adapter.controller.ResumeIntroductionController;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionCreateRequest;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionUpdateRequest;
-import com.api.resume.application.resumeintroduction.ResumeIntroductionService;
+import com.api.resume.application.resumeintroduction.ResumeIntroductionUseCase;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
 import com.api.resume.domain.dto.ResumeIntroductionDetailDto;
@@ -42,7 +42,7 @@ class ResumeIntroductionDocumentationTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private ResumeIntroductionService resumeIntroductionService;
+    private ResumeIntroductionUseCase resumeIntroductionUseCase;
 
     @Test
     void documentGetAllResumeIntroduction() throws Exception {
@@ -52,7 +52,7 @@ class ResumeIntroductionDocumentationTest {
                 .title("Test Title")
                 .content("Test Content")
                 .build();
-        given(resumeIntroductionService.getAll(any()))
+        given(resumeIntroductionUseCase.getAll(any()))
                 .willReturn(List.of(dto));
 
         // when & then
@@ -80,7 +80,7 @@ class ResumeIntroductionDocumentationTest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        given(resumeIntroductionService.getResumeIntroduction(resumeIntroductionId))
+        given(resumeIntroductionUseCase.getResumeIntroduction(resumeIntroductionId))
                 .willReturn(dto);
 
         // when & then
@@ -106,7 +106,7 @@ class ResumeIntroductionDocumentationTest {
     void documentCreateResumeIntroduction() throws Exception {
         // given
         ResumeIntroductionCreateRequest request = new ResumeIntroductionCreateRequest("Test Title", "Test Content");
-        doNothing().when(resumeIntroductionService).create(any(ResumeIntroductionCreateCommand.class));
+        doNothing().when(resumeIntroductionUseCase).create(any(ResumeIntroductionCreateCommand.class));
 
         // when & then
         mockMvc.perform(post("/api/v1/resume-introduction")
@@ -128,7 +128,7 @@ class ResumeIntroductionDocumentationTest {
         // given
         long resumeIntroductionId = 1L;
         ResumeIntroductionUpdateRequest request = new ResumeIntroductionUpdateRequest(1L, "update title", "update content");
-        doNothing().when(resumeIntroductionService).update(any(ResumeIntroductionUpdateCommand.class));
+        doNothing().when(resumeIntroductionUseCase).update(any(ResumeIntroductionUpdateCommand.class));
 
         // when & then
         mockMvc.perform(put("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId)
@@ -153,7 +153,7 @@ class ResumeIntroductionDocumentationTest {
     void documentDeleteResumeIntroduction() throws Exception {
         // given
         long resumeIntroductionId = 1L;
-        doNothing().when(resumeIntroductionService).delete(resumeIntroductionId);
+        doNothing().when(resumeIntroductionUseCase).delete(resumeIntroductionId);
 
         // when & then
         mockMvc.perform(delete("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId))

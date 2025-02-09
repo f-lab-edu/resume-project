@@ -1,7 +1,7 @@
 package com.api.resume.application.service.resumeintroduction;
 
 import com.api.resume.adapter.persistence.resumeIntroduction.ResumeIntroductionAdapter;
-import com.api.resume.application.resumeintroduction.DomainResumeIntroductionService;
+import com.api.resume.application.resumeintroduction.ResumeIntroductionService;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
 import com.api.resume.application.resumeintroduction.query.ResumeIntroductionListQuery;
@@ -23,10 +23,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class ResumeIntroductionServiceTest {
+public class ResumeIntroductionUseCaseTest {
 
     @InjectMocks
-    DomainResumeIntroductionService domainResumeIntroductionService;
+    ResumeIntroductionService domainResumeIntroductionService;
 
     @Mock
     private ResumeIntroductionAdapter resumeIntroductionAdapter;

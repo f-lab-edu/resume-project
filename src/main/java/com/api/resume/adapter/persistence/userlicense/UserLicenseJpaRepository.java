@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface UserLicenseJpaRepository extends JpaRepository<UserLicense, Long> {
 
-    public List<UserLicense> findAllByUserId(long userId);
+    List<UserLicense> findAllByUserId(long userId);
+    UserLicense findByUserIdAndId(long userId, long userLicenseId);
 }

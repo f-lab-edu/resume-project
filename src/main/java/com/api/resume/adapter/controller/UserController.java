@@ -3,7 +3,7 @@ package com.api.resume.adapter.controller;
 import com.api.resume.adapter.payload.user.UserCreateRequest;
 import com.api.resume.adapter.payload.user.UserDetailResponse;
 import com.api.resume.adapter.payload.user.UserUpdateRequest;
-import com.api.resume.application.user.UserService;
+import com.api.resume.application.user.UserUseCase;
 import com.api.resume.application.user.command.UserCreateCommand;
 import com.api.resume.application.user.command.UserUpdateCommand;
 import com.api.resume.domain.dto.UserDetailDto;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserUseCase userUseCase;
 
     @GetMapping("/{userId}")
     public UserDetailResponse getUser(@PathVariable long userId) {
-        UserDetailDto userDetailDto = userService.getUser(userId);
+        UserDetailDto userDetailDto = userUseCase.getUser(userId);
         return UserDetailResponse.from(userDetailDto);
     }
 
@@ -33,7 +33,7 @@ public class UserController {
                 .birthDate(request.getBirthDate())
                 .phoneNumber(request.getPhoneNumber())
                 .build();
-        userService.create(create);
+        userUseCase.create(create);
     }
 
     @PutMapping("/{userId}")
@@ -47,7 +47,7 @@ public class UserController {
                 .birthDate(request.getBirthDate())
                 .phoneNumber(request.getPhoneNumber())
                 .build();
-        userService.update(update);
+        userUseCase.update(update);
     }
 
 

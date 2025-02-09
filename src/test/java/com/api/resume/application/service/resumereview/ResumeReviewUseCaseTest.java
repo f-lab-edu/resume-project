@@ -1,14 +1,14 @@
 package com.api.resume.application.service.resumereview;
 
 import com.api.resume.adapter.persistence.resumereview.ResumeReviewAdapter;
-import com.api.resume.application.resumereview.DomainResumeReviewService;
+import com.api.resume.application.resumereview.ResumeReviewService;
 import com.api.resume.application.resumereview.command.ResumeReviewCreateCommand;
 import com.api.resume.application.resumereview.command.ResumeReviewUpdateCommand;
 import com.api.resume.application.resumereview.query.ResumeReviewListQuery;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import com.api.resume.domain.entity.ResumeReview;
-import com.api.resume.domain.service.ResumeReviewService;
+import com.api.resume.domain.service.ResumeReviewDomainService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,13 +26,13 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class ResumeReviewServiceTest {
+public class ResumeReviewUseCaseTest {
 
     @InjectMocks
-    DomainResumeReviewService domainResumeReviewService;
+    ResumeReviewService domainResumeReviewService;
 
     @Mock
-    private ResumeReviewService resumeReviewService;
+    private ResumeReviewDomainService resumeReviewDomainService;
 
     @Mock
     ResumeReviewAdapter resumeReviewAdapter;
@@ -143,8 +143,8 @@ public class ResumeReviewServiceTest {
 
         domainResumeReviewService.create(command);
 
-        verify(resumeReviewService).validateUser(command.getUserId());
-        verify(resumeReviewService).validDate(command.getProjectStartDate(), command.getProjectEndDate());
+        verify(resumeReviewDomainService).validateUser(command.getUserId());
+        verify(resumeReviewDomainService).validDate(command.getProjectStartDate(), command.getProjectEndDate());
         verify(resumeReviewAdapter).save(resumeReview);
     }
 
@@ -166,7 +166,7 @@ public class ResumeReviewServiceTest {
 
         domainResumeReviewService.update(command);
 
-        verify(resumeReviewService).validDate(command.getProjectStartDate(), command.getProjectEndDate());
+        verify(resumeReviewDomainService).validDate(command.getProjectStartDate(), command.getProjectEndDate());
         verify(resumeReviewAdapter).getResumeReview(command.getReviewId());
         verify(resumeReview).modify(command);
     }

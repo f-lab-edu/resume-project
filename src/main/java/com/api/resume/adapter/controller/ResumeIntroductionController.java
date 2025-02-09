@@ -4,7 +4,7 @@ import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionCreat
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionDetailResponse;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionListResponse;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionUpdateRequest;
-import com.api.resume.application.resumeintroduction.ResumeIntroductionService;
+import com.api.resume.application.resumeintroduction.ResumeIntroductionUseCase;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
 import com.api.resume.application.resumeintroduction.query.ResumeIntroductionListQuery;
@@ -21,13 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResumeIntroductionController {
 
-    private final ResumeIntroductionService resumeIntroductionService;
+    private final ResumeIntroductionUseCase resumeIntroductionUseCase;
 
     @GetMapping("/")
     public List<ResumeIntroductionListResponse> getAllResumeIntroductionList() {
         ResumeIntroductionListQuery query = new ResumeIntroductionListQuery();
         List<ResumeIntroductionListDto> results =
-                resumeIntroductionService.getAll(query);
+                resumeIntroductionUseCase.getAll(query);
 
         return ResumeIntroductionListResponse.from(results);
     }
@@ -35,7 +35,7 @@ public class ResumeIntroductionController {
     @GetMapping("/{resumeIntroductionId}")
     public ResumeIntroductionDetailResponse getResumeIntroduction(@PathVariable long resumeIntroductionId) {
         ResumeIntroductionDetailDto result =
-                resumeIntroductionService.getResumeIntroduction(resumeIntroductionId);
+                resumeIntroductionUseCase.getResumeIntroduction(resumeIntroductionId);
 
         return ResumeIntroductionDetailResponse.from(result);
     }
@@ -49,7 +49,7 @@ public class ResumeIntroductionController {
                 .content(request.getContent())
                 .build();
 
-        resumeIntroductionService.create(command);
+        resumeIntroductionUseCase.create(command);
     }
 
     @PutMapping("/{resumeIntroductionId}")
@@ -62,13 +62,13 @@ public class ResumeIntroductionController {
                 .content(request.getContent())
                 .build();
 
-        resumeIntroductionService.update(command);
+        resumeIntroductionUseCase.update(command);
     }
 
     @DeleteMapping("/{resumeIntroductionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long resumeIntroductionId) {
-        resumeIntroductionService.delete(resumeIntroductionId);
+        resumeIntroductionUseCase.delete(resumeIntroductionId);
     }
 
 }

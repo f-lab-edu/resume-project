@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
 @Service
-public class ResumeReviewService {
+public class ResumeReviewDomainService {
 
     public void validateUser(final long userId) {
         // userId가 없는 경우 에외처리

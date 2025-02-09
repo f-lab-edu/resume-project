@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -51,15 +52,21 @@ public class ResumeReviewAdapter {
 
 
     private BooleanExpression titleContains(final String title) {
-        return title != null ? QResumeReview.resumeReview.title.containsIgnoreCase(title) : null;
+        return Optional.ofNullable(title)
+                .map(e -> QResumeReview.resumeReview.title.like(title))
+                .orElse(null);
     }
 
     private BooleanExpression companyNameContains(final String companyName) {
-        return companyName != null ? QResumeReview.resumeReview.companyName.containsIgnoreCase(companyName) : null;
+        return Optional.ofNullable(companyName)
+                .map(e -> QResumeReview.resumeReview.companyName.like(companyName))
+                .orElse(null);
     }
 
     private BooleanExpression keywordContains(final String keyword) {
-        return keyword != null ? QResumeReview.resumeReview.keywords.containsIgnoreCase(keyword) : null;
+        return Optional.ofNullable(keyword)
+                .map(e -> QResumeReview.resumeReview.companyName.like(keyword))
+                .orElse(null);
     }
 
     private OrderSpecifier<?> getSortOrder(final String sortBy) {

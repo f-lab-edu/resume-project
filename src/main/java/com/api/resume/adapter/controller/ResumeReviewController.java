@@ -1,7 +1,7 @@
 package com.api.resume.adapter.controller;
 
 import com.api.resume.adapter.payload.resumereivew.*;
-import com.api.resume.application.resumereview.ResumeReviewService;
+import com.api.resume.application.resumereview.ResumeReviewUseCase;
 import com.api.resume.application.resumereview.command.ResumeReviewCreateCommand;
 import com.api.resume.application.resumereview.command.ResumeReviewUpdateCommand;
 import com.api.resume.application.resumereview.query.ResumeReviewListQuery;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResumeReviewController {
 
-    private final ResumeReviewService resumeReviewService;
+    private final ResumeReviewUseCase resumeReviewUseCase;
     @GetMapping("")
     public List<ResumeReviewListResponse> getAllResumeReview(ResumeReviewListRequest request,
                                                              @RequestParam(defaultValue = "DESC") String direction) {
@@ -28,13 +28,13 @@ public class ResumeReviewController {
                         .companyName(request.getCompanyName())
                         .keyword(request.getKeyword())
                         .build();
-        List<ResumeReviewListDto> resumeReviewList = resumeReviewService.getAllResumeReviewList(query, direction);
+        List<ResumeReviewListDto> resumeReviewList = resumeReviewUseCase.getAllResumeReviewList(query, direction);
         return ResumeReviewListResponse.from(resumeReviewList);
     }
 
     @GetMapping("/{reviewId}")
     public ResumeReviewDetailResponse getResumeReview(@PathVariable Long reviewId) {
-        ResumeReviewDetailDto resumeReviewDetail = resumeReviewService.getResumeReview(reviewId);
+        ResumeReviewDetailDto resumeReviewDetail = resumeReviewUseCase.getResumeReview(reviewId);
         return ResumeReviewDetailResponse.from(resumeReviewDetail);
     }
 
@@ -53,7 +53,7 @@ public class ResumeReviewController {
                 .projectEndDate(request.getProjectEndDate())
                 .build();
 
-        resumeReviewService.create(command);
+        resumeReviewUseCase.create(command);
     }
 
     @PutMapping("/{reviewId}")
@@ -72,12 +72,12 @@ public class ResumeReviewController {
                 .projectStartDate(request.getProjectStartDate())
                 .projectEndDate(request.getProjectEndDate())
                 .build();
-        resumeReviewService.update(command);
+        resumeReviewUseCase.update(command);
     }
 
     @DeleteMapping("/{reviewId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long reviewId) {
-        resumeReviewService.delete(reviewId);
+        resumeReviewUseCase.delete(reviewId);
     }
 }
