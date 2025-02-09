@@ -4,10 +4,10 @@ import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionCreat
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionDetailResponse;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionListResponse;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionUpdateRequest;
-import com.api.resume.application.service.resumeintroduction.command.ResumeIntroductionCreateCommand;
-import com.api.resume.application.service.resumeintroduction.command.ResumeIntroductionUpdateCommand;
-import com.api.resume.application.service.resumeintroduction.query.ResumeIntroductionListQuery;
-import com.api.resume.application.usecase.resumeintroduction.*;
+import com.api.resume.application.resumeintroduction.ResumeIntroductionService;
+import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
+import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
+import com.api.resume.application.resumeintroduction.query.ResumeIntroductionListQuery;
 import com.api.resume.domain.dto.ResumeIntroductionDetailDto;
 import com.api.resume.domain.dto.ResumeIntroductionListDto;
 import lombok.RequiredArgsConstructor;
@@ -21,17 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResumeIntroductionController {
 
-    private final ResumeIntroductionListUseCase resumeIntroductionListUseCase;
-    private final ResumeIntroductionDetailUseCase resumeIntroductionDetailUseCase;
-    private final ResumeIntroductionCreateUseCase resumeIntroductionCreateUseCase;
-    private final ResumeIntroductionUpdateUseCase resumeIntroductionUpdateUseCase;
-    private final ResumeIntroductionDeleteUseCase resumeIntroductionDeleteUseCase;
+    private final ResumeIntroductionService resumeIntroductionService;
 
     @GetMapping("/")
     public List<ResumeIntroductionListResponse> getAllResumeIntroductionList() {
         ResumeIntroductionListQuery query = new ResumeIntroductionListQuery();
         List<ResumeIntroductionListDto> results =
-                resumeIntroductionListUseCase.getAll(query);
+                resumeIntroductionService.getAll(query);
 
         return ResumeIntroductionListResponse.from(results);
     }
@@ -39,7 +35,7 @@ public class ResumeIntroductionController {
     @GetMapping("/{resumeIntroductionId}")
     public ResumeIntroductionDetailResponse getResumeIntroduction(@PathVariable long resumeIntroductionId) {
         ResumeIntroductionDetailDto result =
-                resumeIntroductionDetailUseCase.getResumeIntroduction(resumeIntroductionId);
+                resumeIntroductionService.getResumeIntroduction(resumeIntroductionId);
 
         return ResumeIntroductionDetailResponse.from(result);
     }
@@ -53,7 +49,7 @@ public class ResumeIntroductionController {
                 .content(request.getContent())
                 .build();
 
-        resumeIntroductionCreateUseCase.create(command);
+        resumeIntroductionService.create(command);
     }
 
     @PutMapping("/{resumeIntroductionId}")
@@ -66,13 +62,13 @@ public class ResumeIntroductionController {
                 .content(request.getContent())
                 .build();
 
-        resumeIntroductionUpdateUseCase.update(command);
+        resumeIntroductionService.update(command);
     }
 
     @DeleteMapping("/{resumeIntroductionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long resumeIntroductionId) {
-        resumeIntroductionDeleteUseCase.delete(resumeIntroductionId);
+        resumeIntroductionService.delete(resumeIntroductionId);
     }
 
 }

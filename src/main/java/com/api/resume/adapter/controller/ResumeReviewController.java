@@ -1,10 +1,10 @@
 package com.api.resume.adapter.controller;
 
 import com.api.resume.adapter.payload.resumereivew.*;
-import com.api.resume.application.service.resumereview.command.ResumeReviewCreateCommand;
-import com.api.resume.application.service.resumereview.command.ResumeReviewUpdateCommand;
-import com.api.resume.application.service.resumereview.query.ResumeReviewListQuery;
-import com.api.resume.application.usecase.resumereview.*;
+import com.api.resume.application.resumereview.ResumeReviewService;
+import com.api.resume.application.resumereview.command.ResumeReviewCreateCommand;
+import com.api.resume.application.resumereview.command.ResumeReviewUpdateCommand;
+import com.api.resume.application.resumereview.query.ResumeReviewListQuery;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResumeReviewController {
 
-    private final ResumeReviewListUseCase resumeReviewListUseCase;
-    private final ResumeReviewDetailUseCase resumeReviewDetailUseCase;
-    private final ResumeReviewCreateUseCase resumeReviewCreateUseCase;
-    private final ResumeReviewUpdateUseCase resumeReviewUpdateUseCase;
-    private final ResumeReviewDeleteUseCase resumeReviewDeleteUseCase;
-
-
+    private final ResumeReviewService resumeReviewService;
     @GetMapping("")
     public List<ResumeReviewListResponse> getAllResumeReview(ResumeReviewListRequest request,
                                                                              @RequestParam(defaultValue = "DESC") String direction) {
@@ -34,13 +28,13 @@ public class ResumeReviewController {
                         .companyName(request.getCompanyName())
                         .keyword(request.getKeyword())
                         .build();
-        List<ResumeReviewListDto> resumeReviewList = resumeReviewListUseCase.getAllResumeReviewList(query, direction);
+        List<ResumeReviewListDto> resumeReviewList = resumeReviewService.getAllResumeReviewList(query, direction);
         return ResumeReviewListResponse.from(resumeReviewList);
     }
 
     @GetMapping("/{reviewId}")
     public ResumeReviewDetailResponse getResumeReview(@PathVariable Long reviewId) {
-        ResumeReviewDetailDto resumeReviewDetail = resumeReviewDetailUseCase.getResumeReview(reviewId);
+        ResumeReviewDetailDto resumeReviewDetail = resumeReviewService.getResumeReview(reviewId);
         return ResumeReviewDetailResponse.from(resumeReviewDetail);
     }
 
@@ -59,7 +53,7 @@ public class ResumeReviewController {
                 .projectEndDate(request.getProjectEndDate())
                 .build();
 
-        resumeReviewCreateUseCase.create(command);
+        resumeReviewService.create(command);
     }
 
     @PutMapping("/{reviewId}")
@@ -78,12 +72,12 @@ public class ResumeReviewController {
                 .projectStartDate(request.getProjectStartDate())
                 .projectEndDate(request.getProjectEndDate())
                 .build();
-        resumeReviewUpdateUseCase.update(command);
+        resumeReviewService.update(command);
     }
 
     @DeleteMapping("/{reviewId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long reviewId) {
-        resumeReviewDeleteUseCase.delete(reviewId);
+        resumeReviewService.delete(reviewId);
     }
 }

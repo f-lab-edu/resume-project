@@ -3,13 +3,12 @@ package com.api.resume.document;
 import com.api.resume.adapter.controller.ResumeIntroductionController;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionCreateRequest;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionUpdateRequest;
-import com.api.resume.application.service.resumeintroduction.command.ResumeIntroductionCreateCommand;
-import com.api.resume.application.service.resumeintroduction.command.ResumeIntroductionUpdateCommand;
-import com.api.resume.application.usecase.resumeintroduction.*;
+import com.api.resume.application.resumeintroduction.ResumeIntroductionService;
+import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
+import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
 import com.api.resume.domain.dto.ResumeIntroductionDetailDto;
 import com.api.resume.domain.dto.ResumeIntroductionListDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -43,19 +42,7 @@ class ResumeIntroductionDocumentationTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private ResumeIntroductionListUseCase resumeIntroductionListUseCase;
-
-    @MockBean
-    private ResumeIntroductionDetailUseCase resumeIntroductionDetailUseCase;
-
-    @MockBean
-    private ResumeIntroductionCreateUseCase resumeIntroductionCreateUseCase;
-
-    @MockBean
-    private ResumeIntroductionUpdateUseCase resumeIntroductionUpdateUseCase;
-
-    @MockBean
-    private ResumeIntroductionDeleteUseCase resumeIntroductionDeleteUseCase;
+    private ResumeIntroductionService resumeIntroductionService;
 
     @Test
     void documentGetAllResumeIntroduction() throws Exception {
@@ -65,7 +52,7 @@ class ResumeIntroductionDocumentationTest {
                 .title("Test Title")
                 .content("Test Content")
                 .build();
-        given(resumeIntroductionListUseCase.getAll(any()))
+        given(resumeIntroductionService.getAll(any()))
                 .willReturn(List.of(dto));
 
         // when & then
@@ -93,7 +80,7 @@ class ResumeIntroductionDocumentationTest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        given(resumeIntroductionDetailUseCase.getResumeIntroduction(resumeIntroductionId))
+        given(resumeIntroductionService.getResumeIntroduction(resumeIntroductionId))
                 .willReturn(dto);
 
         // when & then
@@ -119,7 +106,7 @@ class ResumeIntroductionDocumentationTest {
     void documentCreateResumeIntroduction() throws Exception {
         // given
         ResumeIntroductionCreateRequest request = new ResumeIntroductionCreateRequest("Test Title", "Test Content");
-        doNothing().when(resumeIntroductionCreateUseCase).create(any(ResumeIntroductionCreateCommand.class));
+        doNothing().when(resumeIntroductionService).create(any(ResumeIntroductionCreateCommand.class));
 
         // when & then
         mockMvc.perform(post("/api/v1/resume-introduction")
@@ -141,7 +128,7 @@ class ResumeIntroductionDocumentationTest {
         // given
         long resumeIntroductionId = 1L;
         ResumeIntroductionUpdateRequest request = new ResumeIntroductionUpdateRequest(1L, "update title", "update content");
-        doNothing().when(resumeIntroductionUpdateUseCase).update(any(ResumeIntroductionUpdateCommand.class));
+        doNothing().when(resumeIntroductionService).update(any(ResumeIntroductionUpdateCommand.class));
 
         // when & then
         mockMvc.perform(put("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId)
@@ -166,7 +153,7 @@ class ResumeIntroductionDocumentationTest {
     void documentDeleteResumeIntroduction() throws Exception {
         // given
         long resumeIntroductionId = 1L;
-        doNothing().when(resumeIntroductionDeleteUseCase).delete(resumeIntroductionId);
+        doNothing().when(resumeIntroductionService).delete(resumeIntroductionId);
 
         // when & then
         mockMvc.perform(delete("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId))

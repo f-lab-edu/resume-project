@@ -15,7 +15,7 @@ public class UserDetailDto {
     String phoneNumber;
     LocalDate birthDate;
 
-    public static UserDetailDto from(User user) {
+    public static UserDetailDto from(final User user) {
         return UserDetailDto.builder()
                 .userId(user.getId())
                 .email(user.getEmail())

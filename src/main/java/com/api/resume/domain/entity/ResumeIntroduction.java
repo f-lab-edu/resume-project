@@ -1,7 +1,7 @@
 package com.api.resume.domain.entity;
 
-import com.api.resume.application.service.resumeintroduction.command.ResumeIntroductionCreateCommand;
-import com.api.resume.application.service.resumeintroduction.command.ResumeIntroductionUpdateCommand;
+import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
+import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,9 +2,9 @@ package com.api.resume.adapter.controller;
 
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionCreateRequest;
 import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionUpdateRequest;
-import com.api.resume.application.service.resumeintroduction.command.ResumeIntroductionCreateCommand;
-import com.api.resume.application.service.resumeintroduction.command.ResumeIntroductionUpdateCommand;
-import com.api.resume.application.usecase.resumeintroduction.*;
+import com.api.resume.application.resumeintroduction.ResumeIntroductionService;
+import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
+import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
 import com.api.resume.domain.dto.ResumeIntroductionDetailDto;
 import com.api.resume.domain.dto.ResumeIntroductionListDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,19 +35,7 @@ class ResumeIntroductionControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private ResumeIntroductionListUseCase resumeIntroductionListUseCase;
-
-    @MockBean
-    private ResumeIntroductionDetailUseCase resumeIntroductionDetailUseCase;
-
-    @MockBean
-    private ResumeIntroductionCreateUseCase resumeIntroductionCreateUseCase;
-
-    @MockBean
-    private ResumeIntroductionUpdateUseCase resumeIntroductionUpdateUseCase;
-
-    @MockBean
-    private ResumeIntroductionDeleteUseCase resumeIntroductionDeleteUseCase;
+    private ResumeIntroductionService resumeIntroductionService;
 
     @Test
     @DisplayName("자기소개 목록을 조회한다")
@@ -58,7 +46,7 @@ class ResumeIntroductionControllerTest {
                 .title("Test Title")
                 .content("Test Content")
                 .build();
-        given(resumeIntroductionListUseCase.getAll(any()))
+        given(resumeIntroductionService.getAll(any()))
                 .willReturn(List.of(dto));
 
         // when & then
@@ -79,7 +67,7 @@ class ResumeIntroductionControllerTest {
                 .title("Test Title")
                 .content("Test Content")
                 .build();
-        given(resumeIntroductionDetailUseCase.getResumeIntroduction(resumeIntroductionId))
+        given(resumeIntroductionService.getResumeIntroduction(resumeIntroductionId))
                 .willReturn(dto);
 
         // when & then
@@ -95,7 +83,7 @@ class ResumeIntroductionControllerTest {
     void createResumeIntroduction() throws Exception {
         // given
         ResumeIntroductionCreateRequest request = new ResumeIntroductionCreateRequest("Test Title", "Test Content");
-        doNothing().when(resumeIntroductionCreateUseCase).create(any(ResumeIntroductionCreateCommand.class));
+        doNothing().when(resumeIntroductionService).create(any(ResumeIntroductionCreateCommand.class));
 
         // when & then
         mockMvc.perform(post("/api/v1/resume-introduction")
@@ -110,7 +98,7 @@ class ResumeIntroductionControllerTest {
         // given
         long resumeIntroductionId = 1L;
         ResumeIntroductionUpdateRequest request = new ResumeIntroductionUpdateRequest(1L, "update title", "update content");
-        doNothing().when(resumeIntroductionUpdateUseCase).update(any(ResumeIntroductionUpdateCommand.class));
+        doNothing().when(resumeIntroductionService).update(any(ResumeIntroductionUpdateCommand.class));
 
         // when & then
         mockMvc.perform(put("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId)
@@ -124,7 +112,7 @@ class ResumeIntroductionControllerTest {
     void deleteResumeIntroduction() throws Exception {
         // given
         long resumeIntroductionId = 1L;
-        doNothing().when(resumeIntroductionDeleteUseCase).delete(resumeIntroductionId);
+        doNothing().when(resumeIntroductionService).delete(resumeIntroductionId);
 
         // when & then
         mockMvc.perform(delete("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId))

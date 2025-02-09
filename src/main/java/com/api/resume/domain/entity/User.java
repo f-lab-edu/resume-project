@@ -1,7 +1,7 @@
 package com.api.resume.domain.entity;
 
-import com.api.resume.application.service.user.command.UserCreateCommand;
-import com.api.resume.application.service.user.command.UserUpdateCommand;
+import com.api.resume.application.user.command.UserCreateCommand;
+import com.api.resume.application.user.command.UserUpdateCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

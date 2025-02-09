@@ -1,6 +1,6 @@
 package com.api.resume.adapter.persistence.resumereview;
 
-import com.api.resume.application.service.resumereview.query.ResumeReviewListQuery;
+import com.api.resume.application.resumereview.query.ResumeReviewListQuery;
 import com.api.resume.domain.entity.ResumeReview;
 import org.springframework.data.jpa.domain.Specification;
 

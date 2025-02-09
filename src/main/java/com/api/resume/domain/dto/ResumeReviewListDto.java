@@ -18,7 +18,6 @@ public class ResumeReviewListDto {
     LocalDate projectEndDate;
     String keywords;
 
-
     public static List<ResumeReviewListDto> from(final List<ResumeReview> resumeReviews) {
         return resumeReviews.stream()
                 .map(ResumeReviewListDto::fromResumeReview)
