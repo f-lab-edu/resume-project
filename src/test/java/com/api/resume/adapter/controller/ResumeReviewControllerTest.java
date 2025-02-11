@@ -2,8 +2,8 @@ package com.api.resume.adapter.controller;
 
 import com.api.resume.adapter.payload.resumereivew.ResumeReviewCreateRequest;
 import com.api.resume.adapter.payload.resumereivew.ResumeReviewUpdateRequest;
-import com.api.resume.application.service.query.ResumeReviewListQuery;
-import com.api.resume.application.usecase.*;
+import com.api.resume.application.resumereview.ResumeReviewUseCase;
+import com.api.resume.application.resumereview.query.ResumeReviewListQuery;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,19 +39,7 @@ class ResumeReviewControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    private ResumeReviewListUseCase resumeReviewListUseCase;
-
-    @MockBean
-    private ResumeReviewDetailUseCase resumeReviewDetailUseCase;
-
-    @MockBean
-    private ResumeReviewCreateUseCase resumeReviewCreateUseCase;
-
-    @MockBean
-    private ResumeReviewUpdateUseCase resumeReviewUpdateUseCase;
-
-    @MockBean
-    private ResumeReviewDeleteUseCase resumeReviewDeleteUseCase;
+    private ResumeReviewUseCase resumeReviewUseCase;
 
     @Test
     void 프로젝트_회고_목록_조회() throws Exception {
@@ -65,7 +53,7 @@ class ResumeReviewControllerTest {
                 .build();
         List<ResumeReviewListDto> mockResult = List.of(firstResumeReview);
 
-        when(resumeReviewListUseCase.getAllResumeReviewList(any(ResumeReviewListQuery.class), eq("DESC")))
+        when(resumeReviewUseCase.getAllResumeReviewList(any(ResumeReviewListQuery.class), eq("DESC")))
                 .thenReturn(mockResult);
 
         mockMvc.perform(get(URI)
@@ -90,7 +78,7 @@ class ResumeReviewControllerTest {
                 .keywords("java, spring-boot, mysql, 개선작업")
                 .build();
 
-        when(resumeReviewDetailUseCase.getResumeReview(reviewId)).thenReturn(mockDetailDto);
+        when(resumeReviewUseCase.getResumeReview(reviewId)).thenReturn(mockDetailDto);
 
         mockMvc.perform(get(URI + "/{reviewId}", reviewId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -117,7 +105,7 @@ class ResumeReviewControllerTest {
                         .situation("Test Situation")
                         .build();
 
-        when(resumeReviewDetailUseCase.getResumeReview(reviewId)).thenReturn(detailDto);
+        when(resumeReviewUseCase.getResumeReview(reviewId)).thenReturn(detailDto);
 
         mockMvc.perform(get(URI + "/{reviewId}", reviewId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -137,7 +125,7 @@ class ResumeReviewControllerTest {
                         .projectEndDate(LocalDate.of(2023, 12, 31))
                         .build();
 
-        doNothing().when(resumeReviewCreateUseCase).create(any());
+        doNothing().when(resumeReviewUseCase).create(any());
 
         mockMvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -157,7 +145,7 @@ class ResumeReviewControllerTest {
                         .projectEndDate(LocalDate.of(2023, 12, 31))
                         .build();
 
-        doNothing().when(resumeReviewUpdateUseCase).update(any());
+        doNothing().when(resumeReviewUseCase).update(any());
 
         mockMvc.perform(put(URI + "/{reviewId}", reviewId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -168,11 +156,11 @@ class ResumeReviewControllerTest {
     @Test
     void 리뷰를_삭제하면_정상적으로_삭제된다() throws Exception {
         Long reviewId = 1L;
-        doNothing().when(resumeReviewDeleteUseCase).delete(reviewId);
+        doNothing().when(resumeReviewUseCase).delete(reviewId);
         mockMvc.perform(delete(URI + "/{reviewId}", reviewId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        verify(resumeReviewDeleteUseCase, Mockito.times(1)).delete(reviewId);
+        verify(resumeReviewUseCase, Mockito.times(1)).delete(reviewId);
     }
 }

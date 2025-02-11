@@ -3,7 +3,7 @@ package com.api.resume.document;
 import com.api.resume.adapter.controller.ResumeReviewController;
 import com.api.resume.adapter.payload.resumereivew.ResumeReviewCreateRequest;
 import com.api.resume.adapter.payload.resumereivew.ResumeReviewUpdateRequest;
-import com.api.resume.application.usecase.*;
+import com.api.resume.application.resumereview.ResumeReviewUseCase;
 import com.api.resume.domain.dto.ResumeReviewDetailDto;
 import com.api.resume.domain.dto.ResumeReviewListDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,19 +40,7 @@ public class ResumeReviewDocumentationTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private ResumeReviewListUseCase resumeReviewListUseCase;
-
-    @MockBean
-    private ResumeReviewDetailUseCase resumeReviewDetailUseCase;
-
-    @MockBean
-    private ResumeReviewCreateUseCase resumeReviewCreateUseCase;
-
-    @MockBean
-    private ResumeReviewUpdateUseCase resumeReviewUpdateUseCase;
-
-    @MockBean
-    private ResumeReviewDeleteUseCase resumeReviewDeleteUseCase;
+    private ResumeReviewUseCase resumeReviewUseCase;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -78,7 +66,7 @@ public class ResumeReviewDocumentationTests {
                         .build()
         );
 
-        Mockito.when(resumeReviewListUseCase.getAllResumeReviewList(Mockito.any(), Mockito.eq("DESC")))
+        Mockito.when(resumeReviewUseCase.getAllResumeReviewList(Mockito.any(), Mockito.eq("DESC")))
                 .thenReturn(mockData);
 
         mockMvc.perform(get("/api/v1/resumes/reviews")
@@ -123,7 +111,7 @@ public class ResumeReviewDocumentationTests {
                 .result("blah blah~~~ ")
                 .build();
 
-        Mockito.when(resumeReviewDetailUseCase.getResumeReview(1L))
+        Mockito.when(resumeReviewUseCase.getResumeReview(1L))
                 .thenReturn(response);
 
         mockMvc.perform(get(URI + "/{reviewId}", 1)

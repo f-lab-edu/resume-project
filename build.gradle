@@ -34,6 +34,11 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
     implementation 'org.springframework.restdocs:spring-restdocs-restassured'
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
 
@@ -70,4 +75,16 @@ asciidoctor {
 
 tasks.build {
     dependsOn asciidoctor
+}
+// Q타입 엔티티가 생성될 경로
+def querydslSrcDir = 'src/main/generated'
+
+// clean 시 Q타입 삭제
+clean {
+    delete file(querydslSrcDir)
+}
+
+// compile시 Q타입 경로에 파일 생성
+tasks.withType(JavaCompile).configureEach {
+    options.generatedSourceOutputDirectory = file(querydslSrcDir)
 }

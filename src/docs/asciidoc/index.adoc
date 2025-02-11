@@ -1,11 +1,10 @@
-:snippets: ../../../build/generated-snippets
-
-= API Documentation
-:toc: left
-:toclevels: 2
-:sectnums:
+= Resume API Documentation
+:doctype: book
 :icons: font
 :source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
 
 [[resources-list]]
 
@@ -36,3 +35,27 @@ include::{snippets}/resume-review-update/request-fields.adoc[]
 include::{snippets}/resume-review-delete/http-request.adoc[]
 include::{snippets}/resume-review-delete/http-response.adoc[]
 include::{snippets}/resume-review-delete/path-parameters.adoc[]
+
+
+== 자기소개 목록 조회
+operation::resume-introduction-list[snippets='http-request,http-response,response-fields']
+
+[[resources-resume-introduction-detail]]
+== 자기소개 상세 조회
+
+operation::resume-introduction-detail[snippets='http-request,http-response,path-parameters,response-fields']
+
+[[resources-resume-introduction-create]]
+== 자기소개 생성
+
+operation::resume-introduction-create[snippets='http-request,http-response,request-fields']
+
+[[resources-resume-introduction-update]]
+== 자기소개 수정
+
+operation::resume-introduction-update[snippets='http-request,http-response,path-parameters,request-fields']
+
+[[resources-resume-introduction-delete]]
+== 자기소개 삭제
+
+operation::resume-introduction-delete[snippets='http-request,http-response,path-parameters']
