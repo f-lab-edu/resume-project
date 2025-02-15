@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserAdapter {
+public class UserRepository {
 
     private final UserJpaRepository userJpaRepository;
 
@@ -16,7 +16,7 @@ public class UserAdapter {
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다"));
     }
 
-    public void save(final User user) {
-        userJpaRepository.save(user);
+    public User save(final User user) {
+       return userJpaRepository.save(user);
     }
 }

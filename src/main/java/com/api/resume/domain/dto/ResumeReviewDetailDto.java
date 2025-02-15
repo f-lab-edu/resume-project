@@ -6,19 +6,17 @@ import lombok.Value;
 
 import java.time.LocalDate;
 
-@Value
 @Builder
-public class ResumeReviewDetailDto {
-    Long reviewId;
-    String title;
-    String companyName;
-    String situation;
-    String task;
-    String actionsTaken;
-    String result;
-    String keywords;
-    LocalDate projectStartDate;
-    LocalDate projectEndDate;
+public record ResumeReviewDetailDto(Long reviewId,
+                                    String title,
+                                    String companyName,
+                                    String situation,
+                                    String task,
+                                    String actionsTaken,
+                                    String result,
+                                    String keywords,
+                                    LocalDate projectStartDate,
+                                    LocalDate projectEndDate) {
 
     public static ResumeReviewDetailDto from(final ResumeReview resumeReview) {
         return new ResumeReviewDetailDto(resumeReview.getId()

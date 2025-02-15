@@ -6,14 +6,8 @@ import lombok.Value;
 
 import java.time.LocalDate;
 
-@Value
 @Builder
-public class UserDetailDto {
-    long userId;
-    String email;
-    String name;
-    String phoneNumber;
-    LocalDate birthDate;
+public record UserDetailDto(long userId, String email, String name, String phoneNumber, LocalDate birthDate) {
 
     public static UserDetailDto from(final User user) {
         return UserDetailDto.builder()

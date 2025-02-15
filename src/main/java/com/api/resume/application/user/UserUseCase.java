@@ -6,6 +6,6 @@ import com.api.resume.domain.dto.UserDetailDto;
 
 public interface UserUseCase {
     UserDetailDto getUser(final long userId);
-    void create(final UserCreateCommand command);
-    void update(final UserUpdateCommand command);
+    long create(final UserCreateCommand command);
+    long update(final UserUpdateCommand command);
 }

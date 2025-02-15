@@ -7,11 +7,8 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +16,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ResumeReviewAdapter {
+public class ResumeReviewRepository {
 
     private final ResumeReviewJpaRepository resumeReviewJpaRepository;
     private final JPAQueryFactory queryFactory;
@@ -29,9 +26,9 @@ public class ResumeReviewAdapter {
         return queryFactory
                 .selectFrom(resumeReview)
                 .where(
-                        titleContains(query.getTitle()),
-                        companyNameContains(query.getCompanyName()),
-                        keywordContains(query.getKeyword())
+                        titleContains(query.title()),
+                        companyNameContains(query.companyName()),
+                        keywordContains(query.keyword())
                 )
                 .orderBy(getSortOrder(direction))
                 .fetch();
@@ -65,7 +62,7 @@ public class ResumeReviewAdapter {
 
     private BooleanExpression keywordContains(final String keyword) {
         return Optional.ofNullable(keyword)
-                .map(e -> QResumeReview.resumeReview.companyName.contains(keyword))
+                .map(e -> QResumeReview.resumeReview.keywords.contains(keyword))
                 .orElse(null);
     }
 
@@ -73,7 +70,7 @@ public class ResumeReviewAdapter {
         QResumeReview resumeReview = QResumeReview.resumeReview;
 
         PathBuilder<?> entityPath = new PathBuilder<>(ResumeReview.class, "resumeReview");
-        if(sortBy != null) {
+        if (sortBy != null) {
             Order order = "DESC".equalsIgnoreCase(sortBy) ? Order.DESC : Order.ASC;
             return new OrderSpecifier<>(order, entityPath.getDate("projectStartDate", java.time.LocalDateTime.class));
         }

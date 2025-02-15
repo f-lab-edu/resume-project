@@ -7,13 +7,8 @@ import lombok.Value;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Value
 @Builder
-public class ResumeIntroductionListDto {
-
-    long resumeIntroductionId;
-    String title;
-    String content;
+public record ResumeIntroductionListDto(long resumeIntroductionId, String title, String content) {
 
     public static List<ResumeIntroductionListDto> from(final List<ResumeIntroduction> resumeIntroductions) {
         return resumeIntroductions.stream()

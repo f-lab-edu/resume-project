@@ -1,7 +1,6 @@
 package com.api.resume.adapter.controller;
 
-import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionCreateRequest;
-import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionUpdateRequest;
+import com.api.resume.adapter.payload.resumeintroduction.*;
 import com.api.resume.application.resumeintroduction.ResumeIntroductionUseCase;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
@@ -10,6 +9,8 @@ import com.api.resume.domain.dto.ResumeIntroductionListDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,22 +21,21 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ResumeIntroductionController.class)
+@ExtendWith(MockitoExtension.class)
 class ResumeIntroductionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private ResumeIntroductionUseCase resumeIntroductionUseCase;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("자기소개 목록을 조회한다")
@@ -49,7 +49,7 @@ class ResumeIntroductionControllerTest {
         given(resumeIntroductionUseCase.getAll(any()))
                 .willReturn(List.of(dto));
 
-        // when & then
+        // When & Then
         mockMvc.perform(get("/api/v1/resume-introduction/"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].resumeIntroductionId").value(1L))
@@ -59,63 +59,72 @@ class ResumeIntroductionControllerTest {
 
     @Test
     @DisplayName("자기소개 상세 정보를 조회한다")
-    void getResumeIntroductionDetail() throws Exception {
-        // given
-        long resumeIntroductionId = 1L;
-        ResumeIntroductionDetailDto dto = ResumeIntroductionDetailDto.builder()
-                .resumeIntroductionId(resumeIntroductionId)
-                .title("Test Title")
-                .content("Test Content")
+    void getResumeIntroduction() throws Exception {
+        // Given
+        ResumeIntroductionDetailDto resumeIntroductionDetailDto = ResumeIntroductionDetailDto.builder()
+                .resumeIntroductionId(1L)
+                .title("detail title")
+                .content("detail content")
                 .build();
-        given(resumeIntroductionUseCase.getResumeIntroduction(resumeIntroductionId))
-                .willReturn(dto);
+        ResumeIntroductionDetailResponse response = ResumeIntroductionDetailResponse.from(resumeIntroductionDetailDto);
+        given(resumeIntroductionUseCase.getResumeIntroduction(1L)).willReturn(resumeIntroductionDetailDto);
 
-        // when & then
-        mockMvc.perform(get("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId))
+        // When & Then
+        mockMvc.perform(get("/api/v1/resume-introduction/{resumeIntroductionId}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.resumeIntroductionId").value(resumeIntroductionId))
-                .andExpect(jsonPath("$.title").value("Test Title"))
-                .andExpect(jsonPath("$.content").value("Test Content"));
+                .andExpect(jsonPath("$.title").value("detail title"))
+                .andExpect(jsonPath("$.content").value("detail content"));
     }
 
     @Test
-    @DisplayName("자기소개를 생성한다")
+    @DisplayName("자기소개 생성한다")
     void createResumeIntroduction() throws Exception {
-        // given
-        ResumeIntroductionCreateRequest request = new ResumeIntroductionCreateRequest("Test Title", "Test Content");
-        doNothing().when(resumeIntroductionUseCase).create(any(ResumeIntroductionCreateCommand.class));
+        // Given
+        long resumeIntroductionId = 1L;
 
-        // when & then
+        ResumeIntroductionCreateRequest request = new ResumeIntroductionCreateRequest("New Title", "New Content");
+        ResumeIntroductionCreateResponse response = ResumeIntroductionCreateResponse.from(resumeIntroductionId);
+        given(resumeIntroductionUseCase.create(any(ResumeIntroductionCreateCommand.class))).willReturn(response.resumeIntroductionId());
+
+        // When & Then
         mockMvc.perform(post("/api/v1/resume-introduction")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.resumeIntroductionId").value(1L));
     }
 
     @Test
-    @DisplayName("자기소개를 수정한다")
+    @DisplayName("자기소개 수정한다")
     void updateResumeIntroduction() throws Exception {
-        // given
         long resumeIntroductionId = 1L;
-        ResumeIntroductionUpdateRequest request = new ResumeIntroductionUpdateRequest(1L, "update title", "update content");
-        doNothing().when(resumeIntroductionUseCase).update(any(ResumeIntroductionUpdateCommand.class));
 
-        // when & then
-        mockMvc.perform(put("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId)
+        // Given
+        ResumeIntroductionUpdateRequest request = new ResumeIntroductionUpdateRequest(resumeIntroductionId, "Updated Title", "Updated Content");
+        ResumeIntroductionUpdateResponse response = ResumeIntroductionUpdateResponse.from(resumeIntroductionId);
+
+        given(resumeIntroductionUseCase.update(any(ResumeIntroductionUpdateCommand.class))).willReturn(response.resumeIntroductionId());
+
+        // When & Then
+        mockMvc.perform(put("/api/v1/resume-introduction/{resumeIntroductionId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resumeIntroductionId")
+                        .value(1L));
     }
 
     @Test
-    @DisplayName("자기소개를 삭제한다")
+    @DisplayName("자기소개 삭제한다")
     void deleteResumeIntroduction() throws Exception {
-        // given
         long resumeIntroductionId = 1L;
-        doNothing().when(resumeIntroductionUseCase).delete(resumeIntroductionId);
 
-        // when & then
+        // Given
+        given(resumeIntroductionUseCase.delete(resumeIntroductionId)).willReturn(resumeIntroductionId);
+
+        // When & Then
         mockMvc.perform(delete("/api/v1/resume-introduction/{resumeIntroductionId}", resumeIntroductionId))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"));
     }
-} 
+}

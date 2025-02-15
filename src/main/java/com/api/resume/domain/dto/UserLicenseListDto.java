@@ -8,14 +8,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Value
 @Builder
-public class UserLicenseListDto {
-    Long userLicenseId;
-    String licenseName;
-    String issuingAuthority;
-    LocalDate issueDate;
-    String licenseNumber;
+public record UserLicenseListDto(Long userLicenseId,
+                                 String licenseName,
+                                 String issuingAuthority,
+                                 LocalDate issueDate,
+                                 String licenseNumber) {
 
     public static List<UserLicenseListDto> from(final List<UserLicense> userLicenses) {
         return userLicenses.stream()

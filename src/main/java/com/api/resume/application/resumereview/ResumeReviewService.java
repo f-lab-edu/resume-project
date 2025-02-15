@@ -1,6 +1,6 @@
 package com.api.resume.application.resumereview;
 
-import com.api.resume.adapter.persistence.resumereview.ResumeReviewAdapter;
+import com.api.resume.adapter.persistence.resumereview.ResumeReviewRepository;
 import com.api.resume.application.resumereview.command.ResumeReviewCreateCommand;
 import com.api.resume.application.resumereview.command.ResumeReviewUpdateCommand;
 import com.api.resume.application.resumereview.query.ResumeReviewListQuery;
@@ -18,44 +18,46 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResumeReviewService implements ResumeReviewUseCase {
 
-    private final ResumeReviewAdapter resumeReviewAdapter;
+    private final ResumeReviewRepository resumeReviewRepository;
     private final ResumeReviewDomainService resumeReviewDomainService;
 
     @Transactional(readOnly = true)
     @Override
     public List<ResumeReviewListDto> getAllResumeReviewList(final ResumeReviewListQuery query,
                                                             final String direction) {
-        return ResumeReviewListDto.from(resumeReviewAdapter.getAllResumeReview(query, direction));
+        return ResumeReviewListDto.from(resumeReviewRepository.getAllResumeReview(query, direction));
     }
 
     @Transactional(readOnly = true)
     @Override
     public ResumeReviewDetailDto getResumeReview(final long reviewId) {
-        return ResumeReviewDetailDto.from(resumeReviewAdapter.getResumeReview(reviewId));
+        return ResumeReviewDetailDto.from(resumeReviewRepository.getResumeReview(reviewId));
     }
 
     @Transactional
     @Override
-    public void create(final ResumeReviewCreateCommand command) {
-        resumeReviewDomainService.validateUser(command.getUserId());
-        resumeReviewDomainService.validDate(command.getProjectStartDate(), command.getProjectEndDate());
+    public long create(final ResumeReviewCreateCommand command) {
+        resumeReviewDomainService.validateUser(command.userId());
+        resumeReviewDomainService.validDate(command.projectStartDate(), command.projectEndDate());
 
         ResumeReview resumeReview = ResumeReview.create(command);
-        resumeReviewAdapter.save(resumeReview);
+        return resumeReviewRepository.save(resumeReview).getId();
     }
 
     @Transactional
     @Override
-    public void update(final ResumeReviewUpdateCommand command) {
+    public long update(final ResumeReviewUpdateCommand command) {
         resumeReviewDomainService.validDate(command.getProjectStartDate(), command.getProjectEndDate());
 
-        final ResumeReview resumeReview = resumeReviewAdapter.getResumeReview(command.getReviewId());
+        final ResumeReview resumeReview = resumeReviewRepository.getResumeReview(command.getReviewId());
         resumeReview.modify(command);
+        return resumeReview.getId();
     }
 
     @Transactional
     @Override
-    public void delete(final long reviewId) {
-        resumeReviewAdapter.delete(reviewId);
+    public long delete(final long reviewId) {
+        resumeReviewRepository.delete(reviewId);
+        return reviewId;
     }
 }

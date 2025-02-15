@@ -46,13 +46,13 @@ public class ResumeIntroduction {
 
     public static ResumeIntroduction create(ResumeIntroductionCreateCommand command) {
         ResumeIntroduction introduction = new ResumeIntroduction();
-        introduction.title = command.getTitle();
-        introduction.content = command.getContent();
+        introduction.title = command.title();
+        introduction.content = command.content();
         return introduction;
     }
 
     public void modify(ResumeIntroductionUpdateCommand command) {
-        this.title = command.getTitle();
-        this.content = command.getContent();
+        this.title = command.title();
+        this.content = command.content();
     }
 }

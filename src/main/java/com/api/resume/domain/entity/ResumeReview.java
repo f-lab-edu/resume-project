@@ -77,15 +77,15 @@ public class ResumeReview {
     public static ResumeReview create(ResumeReviewCreateCommand command) {
 
         ResumeReview review = new ResumeReview();
-        review.title = command.getTitle();
-        review.companyName = command.getCompanyName();
-        review.situation = command.getSituation();
-        review.task = command.getTask();
-        review.actionsTaken = command.getActionsTaken();
-        review.result = command.getResult();
-        review.keywords = command.getKeywords();
-        review.projectStartDate = command.getProjectStartDate();
-        review.projectEndDate = command.getProjectEndDate();
+        review.title = command.title();
+        review.companyName = command.companyName();
+        review.situation = command.situation();
+        review.task = command.task();
+        review.actionsTaken = command.actionsTaken();
+        review.result = command.result();
+        review.keywords = command.keywords();
+        review.projectStartDate = command.projectStartDate();
+        review.projectEndDate = command.projectEndDate();
 
         return review;
     }

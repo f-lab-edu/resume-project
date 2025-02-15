@@ -58,7 +58,7 @@ public class User {
         return user;
     }
 
-    public void modify(final UserUpdateCommand command) {
+    public void update(final UserUpdateCommand command) {
         this.name = command.getName();
         this.email = command.getEmail();
         this.birthDate = command.getBirthDate();

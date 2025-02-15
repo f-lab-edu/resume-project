@@ -11,7 +11,7 @@ import java.util.List;
 public interface ResumeIntroductionUseCase {
     List<ResumeIntroductionListDto> getAll(ResumeIntroductionListQuery query);
     ResumeIntroductionDetailDto getResumeIntroduction(final long resumeIntroductionId);
-    void create(ResumeIntroductionCreateCommand command);
-    void update(ResumeIntroductionUpdateCommand command);
-    void delete(final long resumeIntroductionId);
+    long create(ResumeIntroductionCreateCommand command);
+    long update(ResumeIntroductionUpdateCommand command);
+    long delete(final long resumeIntroductionId);
 }
