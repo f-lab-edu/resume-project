@@ -5,11 +5,6 @@ import lombok.Value;
 
 import java.time.LocalDate;
 
-@Value
 @Builder
-public class UserCreateCommand {
-    String email;
-    String name;
-    String phoneNumber;
-    LocalDate birthDate;
+public record UserCreateCommand(String email, String name, String phoneNumber, LocalDate birthDate) {
 }

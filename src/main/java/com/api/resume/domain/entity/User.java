@@ -4,6 +4,7 @@ import com.api.resume.application.user.command.UserCreateCommand;
 import com.api.resume.application.user.command.UserUpdateCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,9 +16,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user")
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
@@ -51,18 +53,18 @@ public class User {
 
     public static User create(final UserCreateCommand command) {
         User user = new User();
-        user.name = command.getName();
-        user.email = command.getEmail();
-        user.birthDate = command.getBirthDate();
-        user.phoneNumber = command.getPhoneNumber();
+        user.name = command.name();
+        user.email = command.email();
+        user.birthDate = command.birthDate();
+        user.phoneNumber = command.phoneNumber();
         return user;
     }
 
     public void update(final UserUpdateCommand command) {
-        this.name = command.getName();
-        this.email = command.getEmail();
-        this.birthDate = command.getBirthDate();
-        this.phoneNumber = command.getPhoneNumber();
+        this.name = command.name();
+        this.email = command.email();
+        this.birthDate = command.birthDate();
+        this.phoneNumber = command.phoneNumber();
     }
 }
 

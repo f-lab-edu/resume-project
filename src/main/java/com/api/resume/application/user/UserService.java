@@ -31,7 +31,7 @@ public class UserService implements UserUseCase {
     @Transactional
     @Override
     public long update(UserUpdateCommand command) {
-        User user = userRepository.findById(command.getUserId());
+        User user = userRepository.findById(command.userId());
         user.update(command);
         return user.getId();
     }
