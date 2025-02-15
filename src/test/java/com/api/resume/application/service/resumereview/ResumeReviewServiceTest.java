@@ -100,7 +100,6 @@ public class ResumeReviewServiceTest {
         doNothing().when(resumeReviewDomainService).validDate(command.projectStartDate(), command.projectEndDate());
 
         ResumeReview savedResumeReview = ResumeReview.create(command);
-//        savedResumeReview.setId(1L); // ID를 수동으로 설정
 
         given(resumeReviewRepository.save(any(ResumeReview.class))).willReturn(savedResumeReview);
 
@@ -122,7 +121,7 @@ public class ResumeReviewServiceTest {
                 .projectEndDate(LocalDate.of(2024, 12, 31))
                 .build();
 
-        doNothing().when(resumeReviewDomainService).validDate(command.getProjectStartDate(), command.getProjectEndDate());
+        doNothing().when(resumeReviewDomainService).validDate(command.getProjectStartDate(), command.getProjectEndDate());//날짜검증
         given(resumeReviewRepository.getResumeReview(1L)).willReturn(sampleResumeReview);
 
         // When
