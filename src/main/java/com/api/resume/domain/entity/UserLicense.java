@@ -55,9 +55,9 @@ public class UserLicense {
     }
 
     public void modify(final UserUpdateCommand command) {
-        this.licenseName = command.getName();
-        this.issuingAuthority = command.getEmail();
-        this.issueDate = command.getBirthDate();
-        this.licenseNumber = command.getPhoneNumber();
+        this.licenseName = command.name();
+        this.issuingAuthority = command.email();
+        this.issueDate = command.birthDate();
+        this.licenseNumber = command.phoneNumber();
     }
 }

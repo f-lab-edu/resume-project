@@ -5,17 +5,8 @@ import lombok.Value;
 
 import java.time.LocalDate;
 
-@Value
 @Builder
-public class ResumeReviewCreateCommand {
-    Long userId;
-    String title;
-    String companyName;
-    LocalDate projectStartDate;
-    LocalDate projectEndDate;
-    String keywords;
-    String situation;
-    String task;
-    String actionsTaken;
-    String result;
+public record ResumeReviewCreateCommand(Long userId, String title, String companyName, LocalDate projectStartDate,
+                                        LocalDate projectEndDate, String keywords, String situation, String task,
+                                        String actionsTaken, String result) {
 }

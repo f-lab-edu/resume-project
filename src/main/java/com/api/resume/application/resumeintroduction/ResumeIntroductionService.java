@@ -1,6 +1,6 @@
 package com.api.resume.application.resumeintroduction;
 
-import com.api.resume.adapter.persistence.resumeIntroduction.ResumeIntroductionAdapter;
+import com.api.resume.adapter.persistence.resumeIntroduction.ResumeIntroductionRepository;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
 import com.api.resume.application.resumeintroduction.query.ResumeIntroductionListQuery;
@@ -16,13 +16,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ResumeIntroductionService implements ResumeIntroductionUseCase {
-    private final ResumeIntroductionAdapter resumeIntroductionAdapter;
+    private final ResumeIntroductionRepository resumeIntroductionRepository;
 
     @Transactional(readOnly = true)
     @Override
     public List<ResumeIntroductionListDto> getAll(ResumeIntroductionListQuery query) {
         List<ResumeIntroduction> resumeIntroductions =
-                resumeIntroductionAdapter.getAllResumeIntroduction();
+                resumeIntroductionRepository.getAllResumeIntroduction();
         return ResumeIntroductionListDto.from(resumeIntroductions);
     }
 
@@ -30,31 +30,35 @@ public class ResumeIntroductionService implements ResumeIntroductionUseCase {
     @Override
     public ResumeIntroductionDetailDto getResumeIntroduction(final long resumeIntroductionId) {
         ResumeIntroduction resumeIntroduction =
-                resumeIntroductionAdapter.getResumeIntroduction(resumeIntroductionId);
+                resumeIntroductionRepository.getResumeIntroduction(resumeIntroductionId);
         return ResumeIntroductionDetailDto.from(resumeIntroduction);
     }
 
     @Transactional
     @Override
-    public void create(ResumeIntroductionCreateCommand command) {
-        resumeIntroductionAdapter.save(ResumeIntroduction.create(command));
+    public long create(ResumeIntroductionCreateCommand command) {
+        return resumeIntroductionRepository
+                .save(ResumeIntroduction.create(command))
+                .getResumeIntroductionId();
     }
 
     @Transactional
     @Override
-    public void update(ResumeIntroductionUpdateCommand command) {
+    public long update(ResumeIntroductionUpdateCommand command) {
         ResumeIntroduction resumeIntroduction =
-                resumeIntroductionAdapter.getResumeIntroduction(command.getResumeIntroductionId());
+                resumeIntroductionRepository.getResumeIntroduction(command.resumeIntroductionId());
 
         resumeIntroduction.modify(command);
+        return resumeIntroduction.getResumeIntroductionId();
     }
 
     @Transactional
     @Override
-    public void delete(long resumeIntroductionId) {
+    public long delete(long resumeIntroductionId) {
         ResumeIntroduction resumeIntroduction =
-                resumeIntroductionAdapter.getResumeIntroduction(resumeIntroductionId);
+                resumeIntroductionRepository.getResumeIntroduction(resumeIntroductionId);
 
-        resumeIntroductionAdapter.delete(resumeIntroduction);
+        resumeIntroductionRepository.delete(resumeIntroduction);
+        return resumeIntroductionId;
     }
 }

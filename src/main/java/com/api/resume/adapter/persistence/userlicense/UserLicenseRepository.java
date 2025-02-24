@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class UserLicenseAdapter {
+public class UserLicenseRepository {
 
     private final UserLicenseJpaRepository userLicenseJpaRepository;
 

@@ -1,15 +1,10 @@
 package com.api.resume.adapter.controller;
 
-import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionCreateRequest;
-import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionDetailResponse;
-import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionListResponse;
-import com.api.resume.adapter.payload.resumeintroduction.ResumeIntroductionUpdateRequest;
+import com.api.resume.adapter.payload.resumeintroduction.*;
 import com.api.resume.application.resumeintroduction.ResumeIntroductionUseCase;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionCreateCommand;
 import com.api.resume.application.resumeintroduction.command.ResumeIntroductionUpdateCommand;
 import com.api.resume.application.resumeintroduction.query.ResumeIntroductionListQuery;
-import com.api.resume.domain.dto.ResumeIntroductionDetailDto;
-import com.api.resume.domain.dto.ResumeIntroductionListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,49 +21,42 @@ public class ResumeIntroductionController {
     @GetMapping("/")
     public List<ResumeIntroductionListResponse> getAllResumeIntroductionList() {
         ResumeIntroductionListQuery query = new ResumeIntroductionListQuery();
-        List<ResumeIntroductionListDto> results =
-                resumeIntroductionUseCase.getAll(query);
-
-        return ResumeIntroductionListResponse.from(results);
+        return ResumeIntroductionListResponse.from(resumeIntroductionUseCase.getAll(query));
     }
 
     @GetMapping("/{resumeIntroductionId}")
     public ResumeIntroductionDetailResponse getResumeIntroduction(@PathVariable long resumeIntroductionId) {
-        ResumeIntroductionDetailDto result =
-                resumeIntroductionUseCase.getResumeIntroduction(resumeIntroductionId);
-
-        return ResumeIntroductionDetailResponse.from(result);
+        return ResumeIntroductionDetailResponse
+                .from(resumeIntroductionUseCase.getResumeIntroduction(resumeIntroductionId));
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody ResumeIntroductionCreateRequest request) {
-
+    public ResumeIntroductionCreateResponse create(@RequestBody ResumeIntroductionCreateRequest request) {
         ResumeIntroductionCreateCommand command = ResumeIntroductionCreateCommand.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
+                .title(request.title())
+                .content(request.content())
                 .build();
-
-        resumeIntroductionUseCase.create(command);
+        return ResumeIntroductionCreateResponse.from(resumeIntroductionUseCase.create(command));
     }
 
     @PutMapping("/{resumeIntroductionId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable long resumeIntroductionId,
-                       @RequestBody ResumeIntroductionUpdateRequest request) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResumeIntroductionUpdateResponse update(@PathVariable long resumeIntroductionId,
+                                                   @RequestBody ResumeIntroductionUpdateRequest request) {
         ResumeIntroductionUpdateCommand command = ResumeIntroductionUpdateCommand.builder()
                 .resumeIntroductionId(resumeIntroductionId)
-                .title(request.getTitle())
-                .content(request.getContent())
+                .title(request.title())
+                .content(request.content())
                 .build();
 
-        resumeIntroductionUseCase.update(command);
+        return ResumeIntroductionUpdateResponse.from(resumeIntroductionUseCase.update(command));
     }
 
     @DeleteMapping("/{resumeIntroductionId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable long resumeIntroductionId) {
-        resumeIntroductionUseCase.delete(resumeIntroductionId);
+    @ResponseStatus(HttpStatus.OK)
+    public long delete(@PathVariable long resumeIntroductionId) {
+        return resumeIntroductionUseCase.delete(resumeIntroductionId);
     }
 
 }

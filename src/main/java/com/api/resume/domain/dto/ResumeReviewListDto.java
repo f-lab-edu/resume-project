@@ -8,15 +8,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Value
 @Builder
-public class ResumeReviewListDto {
-    Long reviewId;
-    String companyName;
-    String title;
-    LocalDate projectStartDate;
-    LocalDate projectEndDate;
-    String keywords;
+public record ResumeReviewListDto(Long reviewId,
+                                  String companyName,
+                                  String title,
+                                  LocalDate projectStartDate,
+                                  LocalDate projectEndDate, String keywords) {
 
     public static List<ResumeReviewListDto> from(final List<ResumeReview> resumeReviews) {
         return resumeReviews.stream()

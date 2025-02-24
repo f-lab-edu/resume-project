@@ -5,8 +5,6 @@ import com.api.resume.application.resumereview.ResumeReviewUseCase;
 import com.api.resume.application.resumereview.command.ResumeReviewCreateCommand;
 import com.api.resume.application.resumereview.command.ResumeReviewUpdateCommand;
 import com.api.resume.application.resumereview.query.ResumeReviewListQuery;
-import com.api.resume.domain.dto.ResumeReviewDetailDto;
-import com.api.resume.domain.dto.ResumeReviewListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,65 +17,64 @@ import java.util.List;
 public class ResumeReviewController {
 
     private final ResumeReviewUseCase resumeReviewUseCase;
+
     @GetMapping("")
     public List<ResumeReviewListResponse> getAllResumeReview(ResumeReviewListRequest request,
                                                              @RequestParam(defaultValue = "DESC") String direction) {
         ResumeReviewListQuery query =
                 ResumeReviewListQuery.builder()
-                        .title(request.getTitle())
-                        .companyName(request.getCompanyName())
-                        .keyword(request.getKeyword())
+                        .title(request.title())
+                        .companyName(request.companyName())
+                        .keyword(request.keyword())
                         .build();
-        List<ResumeReviewListDto> resumeReviewList = resumeReviewUseCase.getAllResumeReviewList(query, direction);
-        return ResumeReviewListResponse.from(resumeReviewList);
+        return ResumeReviewListResponse.from(resumeReviewUseCase.getAllResumeReviewList(query, direction));
     }
 
     @GetMapping("/{reviewId}")
     public ResumeReviewDetailResponse getResumeReview(@PathVariable Long reviewId) {
-        ResumeReviewDetailDto resumeReviewDetail = resumeReviewUseCase.getResumeReview(reviewId);
-        return ResumeReviewDetailResponse.from(resumeReviewDetail);
+        return ResumeReviewDetailResponse.from(resumeReviewUseCase.getResumeReview(reviewId));
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody ResumeReviewCreateRequest request) {
+    public ResumeReviewCreateResponse create(@RequestBody ResumeReviewCreateRequest request) {
         ResumeReviewCreateCommand command = ResumeReviewCreateCommand.builder()
-                .title(request.getTitle())
-                .companyName(request.getCompanyName())
-                .situation(request.getSituation())
-                .task(request.getTask())
-                .actionsTaken(request.getActionsTaken())
-                .result(request.getResult())
-                .keywords(request.getKeywords())
-                .projectStartDate(request.getProjectStartDate())
-                .projectEndDate(request.getProjectEndDate())
+                .title(request.title())
+                .companyName(request.companyName())
+                .situation(request.situation())
+                .task(request.task())
+                .actionsTaken(request.actionsTaken())
+                .result(request.result())
+                .keywords(request.keywords())
+                .projectStartDate(request.projectStartDate())
+                .projectEndDate(request.projectEndDate())
                 .build();
 
-        resumeReviewUseCase.create(command);
+        return ResumeReviewCreateResponse.from(resumeReviewUseCase.create(command));
     }
 
     @PutMapping("/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable Long reviewId, @RequestBody ResumeReviewUpdateRequest request) {
+    public ResumeReviewUpdateResponse update(@PathVariable Long reviewId, @RequestBody ResumeReviewUpdateRequest request) {
         ResumeReviewUpdateCommand command = ResumeReviewUpdateCommand.builder()
-                .userId(request.getUserId())
+                .userId(request.userId())
                 .reviewId(reviewId)
-                .title(request.getTitle())
-                .companyName(request.getCompanyName())
-                .situation(request.getSituation())
-                .task(request.getTask())
-                .actionsTaken(request.getActionsTaken())
-                .result(request.getResult())
-                .keywords(request.getKeywords())
-                .projectStartDate(request.getProjectStartDate())
-                .projectEndDate(request.getProjectEndDate())
+                .title(request.title())
+                .companyName(request.companyName())
+                .situation(request.situation())
+                .task(request.task())
+                .actionsTaken(request.actionsTaken())
+                .result(request.result())
+                .keywords(request.keywords())
+                .projectStartDate(request.projectStartDate())
+                .projectEndDate(request.projectEndDate())
                 .build();
-        resumeReviewUseCase.update(command);
+        return ResumeReviewUpdateResponse.from(resumeReviewUseCase.update(command));
     }
 
     @DeleteMapping("/{reviewId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long reviewId) {
-        resumeReviewUseCase.delete(reviewId);
+    @ResponseStatus(HttpStatus.OK)
+    public long delete(@PathVariable Long reviewId) {
+        return resumeReviewUseCase.delete(reviewId);
     }
 }

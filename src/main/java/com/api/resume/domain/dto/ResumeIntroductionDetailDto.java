@@ -6,15 +6,12 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
-@Value
 @Builder
-public class ResumeIntroductionDetailDto {
-
-    long resumeIntroductionId;
-    String title;
-    String content;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+public record ResumeIntroductionDetailDto(long resumeIntroductionId,
+                                          String title,
+                                          String content,
+                                          LocalDateTime createdAt,
+                                          LocalDateTime updatedAt) {
 
     public static ResumeIntroductionDetailDto from(final ResumeIntroduction resumeIntroduction) {
         return new ResumeIntroductionDetailDto(
